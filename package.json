@@ -1,0 +1,16 @@
+{
+  "name": "worldinfilms",
+  "description": "wagtail based blog",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atombrella/worldinfilms"
+  },
+  "homepage": "https://worldinfilms.dk",
+  "private": true,
+  "engines": {
+    "npm": ">=6"
+  },
+  "dependencies": {
+    "bootstrap": "^v4.0.0-beta.2"
+  }
+}

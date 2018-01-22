@@ -21,6 +21,17 @@ class BlogPageTag(TaggedItemBase):
     content_object = ParentalKey('BlogPage', related_name='tagged_items')
 
 
+class BlogTagIndexPage(Page):
+
+    def get_context(self, request, **kwargs):
+        tag = request.GET.get('tag')
+        blogpages = BlogPage.objects.filter(tags__name=tag)
+
+        context = super().get_context(request)
+        context['blogpages'] = blogpages
+        return context
+
+
 class BlogPage(Page):
     date = models.DateField("Post date")
     intro = models.CharField(max_length=250)

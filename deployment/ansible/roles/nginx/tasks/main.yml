@@ -1,0 +1,36 @@
+---
+  - name: Installs nginx web server
+    apt: pkg=nginx state=installed update_cache=true
+    notify:
+      - start nginx
+
+  - name: Remove index.html for host
+    file: path=/usr/share/nginx/www/index.html state=absent
+
+  - name: Create nginx include directory
+    file: path=/etc/nginx/includes state=directory
+
+  - name: Unactivate default site
+    file: path=/etc/nginx/sites-enabled/default state=absent
+    notify:
+        - restart nginx
+
+  - name: Unactivate default site
+    file: path=/etc/nginx/sites-available/default state=absent
+    notify:
+      - restart nginx
+
+  - name: Create general nginx settings
+    copy: src=etc/nginx/nginx.conf dest=/etc/nginx/nginx.conf mode=0644
+
+  - name: Create configuration file
+    copy: src=sites-available/worldinfilms dest=/etc/nginx/sites-availble/worldinfilms mode=0644
+    notify:
+      - restart nginx
+
+  - name: Make symlink to sites-enabled
+    file:
+      src: /etc/nginx/sites-available/worldinfilms
+      dest: /etc/nginx/sites-enabled/worldinfilms
+      ensure: present
+      type: symlink

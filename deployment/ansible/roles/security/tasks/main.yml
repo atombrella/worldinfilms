@@ -1,0 +1,53 @@
+# to verify ufw configuration run:
+# sudo ufw status verbose
+
+---
+
+  - name: Install ufw
+    apt: package=ufw state=present
+
+  - name: enable ufw service at boot
+    service: name=ufw enabled=True
+
+  - name: Configure ufw defaults
+    ufw: direction={{ item.direction }} policy={{ item.policy }}
+    with_items:
+      - { direction: 'incoming', policy: 'deny' }
+      - { direction: 'outgoing', policy: 'allow' }
+    notify:
+      - restart ufw
+
+  - name: set ufw default forward policy to deny
+    lineinfile:
+      dest=/etc/default/ufw
+      regexp='^DEFAULT_FORWARD_POLICY='
+      line='DEFAULT_FORWARD_POLICY="ACCEPT"'
+      state=present
+    notify:
+      - restart ufw
+
+
+  - name: Configure ufw rules
+    ufw: rule={{ item.rule }} port={{ item.port }} proto={{ item.proto }}
+    with_items:
+      - { rule: 'limit', port: '{{ ssh_port | default("22") }}', proto: 'tcp' }
+      - { rule: 'allow', port: '80', proto: 'tcp' }
+      - { rule: 'allow', port: '443', proto: 'tcp' }
+    notify:
+      - restart ufw
+
+  - name: Enable ufw logging
+    ufw: logging=on
+    notify:
+      - restart ufw
+
+  - name: Handle before.rules
+    template: src=ufw/before.rules dest=/etc/ufw/before.rules mode=0644
+    notify:
+      - restart ufw
+
+  - name: Handle after.rules
+    template: src=ufw/after.rules dest=/etc/ufw/after.rules mode=0644
+    notify:
+      - restart ufw
+

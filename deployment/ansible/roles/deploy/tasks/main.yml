@@ -1,0 +1,26 @@
+---
+
+  - name: Pull git
+    git: repo={{ project_repo }}
+         dest={{ git_root }}
+         accept_hostkey=yes
+    become_user: www-user
+
+  - name: Install pip requirements
+    pip:
+      requirements: {{ git_root }}/requirements/base.txt
+      virtualenv: {{ virtualenv }}
+      virtualenv_python: python3.5
+    become_user: www-user
+
+  - name: Migrate database
+    django_manage: command=migrate
+                   app_path={{ app_root }}
+                   virtualenv={{ virtualenv }}
+    become_user: www-user
+
+  - name: Collect static files
+    django_manage: command=collectstatic
+                   app_path={{ app_root }}
+                   virtualenv={{ virtualenv }}
+    become_user: www-user

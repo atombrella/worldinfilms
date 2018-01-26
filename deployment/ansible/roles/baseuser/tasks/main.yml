@@ -1,0 +1,20 @@
+---
+  - name: create group mads
+    group: name=mads state=present
+
+  - name: create user mads
+    user: name=mads shell=/bin/bash groups=sudo,admin,mads
+
+  - name: Create SSH folder
+    file:
+      path: /home/mads/.ssh
+      state: directory
+
+  - name: Set authorized key took from file
+    authorized_key:
+      user: mads
+      state: present
+      key: "{{ lookup('file', '/home/mads/.ssh/id_rsa.pub') }}"
+
+  - name: Initialize sudoers
+    copy: src=etc/sudoers.d/90-cloud-init-users dest=/etc/sudoers.d/90-cloud-init-users mode=0440

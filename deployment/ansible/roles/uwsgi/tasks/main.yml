@@ -1,0 +1,35 @@
+---
+
+  - name: Remove symlink in /etc/uwsgi/apps-available
+    file: src=/etc/uwsgi/apps-available/{{ site_name }}.ini
+        dest=/etc/uwsgi/apps-enabled/{{ site_name }}.ini
+        state=absent
+
+  - name: Install UWSGI package
+    apt: name={{ item }} update_cache=yes
+    with_items:
+      - python3-virtualenv
+      - uwsgi
+      - uwsgi-plugin-python
+
+  - name: Copy over uwsgi params
+    copy: src=uwsgi/uwsgi_params dest=/etc/uwsgi/
+
+  - name: Create reload files
+    file: path=/tmp/all.reload group=www-data owner=www-data state=touch
+
+  - name: Create reload files for operator
+    file: path=/tmp/{{ site_name }}.reload group=www-data owner=www-data state=touch
+
+  - name: Set owner and permissions on /var/uwsgi/
+    file: path=/var/uwsgi/ mode=0775 owner=www-data group=www-data
+
+  - name: Set owner and permissions on /var/log/uwsgi/
+    file: path=/var/log/uwsgi/ mode=0775 owner=www-data group=www-data recurse=yes
+
+  - name: Set owner and permissions on /tmp/{{ site_name }}.pid
+    file: path=/tmp/{{ site_name }}.pid owner=www-data group=www-data
+    ignore_errors: yes
+
+  - name: Set owner and permissions on /var/uwsgi/apps/
+    file: path=/var/uwsgi/apps/ owner=www-data group=www-data recurse=yes

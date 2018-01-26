@@ -1,0 +1,13 @@
+---
+
+  - name: Install unattended upgrades package
+    apt: name=unattended-upgrades update_cache=yes
+
+  - name: Enable unattended upgrades package
+    copy: src=20auto-upgrades dest=/etc/apt/apt.conf.d/20auto-upgrades
+
+  - name: Configure unattended upgrades package
+    copy: src=50unattended-upgrades dest=/etc/apt/apt.conf.d/50unattended-upgrades
+
+  - name: Restart service
+    service: name=unattended-upgrades state=restarted

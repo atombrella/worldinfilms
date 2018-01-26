@@ -1,0 +1,8 @@
+---
+
+  - hosts: droplet
+    roles:
+      - security
+      - unattended-upgrades
+      - baseuser
+      - ubuntu

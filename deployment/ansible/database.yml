@@ -1,0 +1,6 @@
+---
+
+  - hosts: droplet
+    roles:
+      - postgresql
+      - createdb

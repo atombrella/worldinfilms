@@ -1,0 +1,2 @@
+[server]
+droplet ansible_ssh_host=159.89.106.186 ansible_ssh_user=root ansible_python_interpreter=/usr/bin/python3

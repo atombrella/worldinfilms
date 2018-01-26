@@ -1,0 +1,4 @@
+# Created by cloud-init v. 17.1 on Thu, 18 Jan 2018 16:44:22 +0000
+
+# User rules for root
+%sudo ALL=(ALL) NOPASSWD:ALL

@@ -102,3 +102,6 @@ ENV/
 
 # npm and bower
 node_modules
+
+# Ansible
+*.retry

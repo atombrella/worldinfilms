@@ -43,19 +43,20 @@
     <body>
         {% wagtailuserbar %}
 
-        <div class="row" role="heading">
-          <div class="col-md-12 col-lg-12">
-            <span class="">World in Films</span>
+        <div class="container">
+          <div class="jumbotron bg-primary">
+            <h1>World in Films</h1>
           </div>
+          {% include "navigation.html" %}
         </div>
-
-        {% include "navigation.html" %}
 
         <div class="row">
           <div class="col-md-3"></div>
           <div class="col-md-6">{% block content %}{% endblock %}</div>
           <div class="col-md-3"></div>
         </div>
+
+        {% include "footer.html" %}
 
         {% block extra_js %}
             {# Override this in templates to add extra javascript #}

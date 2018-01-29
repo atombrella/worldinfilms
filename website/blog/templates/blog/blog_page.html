@@ -2,13 +2,26 @@
 
 {% load wagtailcore_tags %}
 
+{% block extra_css %}
+<style>
+  .richtext p:first-of-type:first-letter, .dropcaps:first-of-type:first-letter {
+    height: 0.7em;
+    margin: 0.08em 0 -0.05em 0;
+    padding: 0 0.065em 0 0;
+    font-size: 5em;
+    line-height: 0.85em;
+    float: left;
+  }
+</style>
+{% endblock %}
+
 {% block body_class %}template-blogpage{% endblock %}
 
 {% block content %}
     <h1>{{ page.title }}</h1>
     <p class="meta">{{ page.date }}</p>
 
-    <div class="intro">{{ page.intro }}</div>
+    <div class="intro dropcaps">{{ page.intro }}</div>
 
     {{ page.body|richtext }}
 

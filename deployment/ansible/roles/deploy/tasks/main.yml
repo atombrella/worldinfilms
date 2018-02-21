@@ -1,26 +1,55 @@
----
+  - name: Create /var/uwsgi/apps folder
+    file:
+      path: /var/uwsgi/apps
+      owner: worldinfilms
+      group: worldinfilms
+      state: directory
+      mode: 0755
 
-  - name: Pull git
-    git: repo={{ project_repo }}
-         dest={{ git_root }}
-         accept_hostkey=yes
-    become_user: www-user
+  - name: Initial clone
+    git:
+      repo: "git@github.com:atombrella/worldinfilms.git"
+      dest: "/var/uwsgi/apps/worldinfilms"
+      version: master
+      accept_hostkey: yes
+      key_file: /home/worldinfilms/.ssh/id_rsa
+    become_user: worldinfilms
+    run_once: true
 
-  - name: Install pip requirements
-    pip:
-      requirements: {{ git_root }}/requirements/base.txt
-      virtualenv: {{ virtualenv }}
-      virtualenv_python: python3.5
-    become_user: www-user
+  - block:
+    - name: Pull git
+      git:
+        repo={{ project_repo }}
+        dest={{ project_root}}
+        accept_hostkey=yes
+        key_file=/home/worldinfilms/.ssh/id_rsa
+      become_user: worldinfilms
 
-  - name: Migrate database
-    django_manage: command=migrate
-                   app_path={{ app_root }}
-                   virtualenv={{ virtualenv }}
-    become_user: www-user
+    - name: Create virtualenv
+      command:
+        virtualenv --python=python3 venv
+        chdir={{ project_root }}
+        creates={{ virtualenv }}
+      become_user: worldinfilms
 
-  - name: Collect static files
-    django_manage: command=collectstatic
-                   app_path={{ app_root }}
-                   virtualenv={{ virtualenv }}
-    become_user: www-user
+    - name: Install newest version of pip in virtualenv
+      pip:
+        name=pip
+        virtualenv={{ virtualenv }}
+      become_user: worldinfilms
+
+    - name: Install pip requirements
+      pip:
+        requirements="{{ project_root }}/requirements/base.txt"
+        virtualenv="{{ virtualenv }}"
+        virtualenv_python=python3.5
+      become_user: worldinfilms
+
+    - name: Migrate database
+      django_manage:
+        command=migrate
+        app_path="{{ project_root }}/website/"
+        virtualenv="{{ virtualenv }}"
+        settings="website.settings.dev"
+      become_user: worldinfilms
+      # need the database password here

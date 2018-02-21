@@ -1,8 +1,10 @@
 ---
 
   - hosts: all
-  - become_user: root
+    vars:
+      - domain_name: "worldinfilms.dk, www.worldinfilms.dk"
     roles:
       - nginx
       - uwsgi
+      - letsencrypt
       - deploy

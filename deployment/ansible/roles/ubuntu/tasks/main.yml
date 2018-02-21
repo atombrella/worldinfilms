@@ -10,3 +10,14 @@
       - git
       - openssh-client
       - openssh-server
+      - ntpdate
+
+  - name: Make ntpdate a cronjob
+    cron:
+      name: "Update time"
+      special_time: hourly
+      job: "ntpdate europe.pool.ntp.org"
+
+  - name: Remove dependencies that are no longer required
+    apt:
+      autoremove: yes

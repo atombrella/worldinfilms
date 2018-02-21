@@ -1,5 +1,3 @@
----
-
   - name: Install Postgres 9.6 apt repository
     apt_repository:
       repo: deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main
@@ -26,3 +24,21 @@
 
   - name: Add PostgreSQL operating system user
     user: name=postgres comment="PostgreSQL binaries owner" group=postgres
+
+  - name: Copy the configuration files
+    copy:
+      src: "{{ item }}"
+      dest: /etc/postgresql/9.6/main/
+      owner: postgres
+      group: postgres
+      mode: 0644
+    with_items:
+      - templates/9.6/main/pg_ctl.conf
+      - templates/9.6/main/pg_hba.conf
+      - templates/9.6/main/pg_ident.conf
+      - templates/9.6/main/postgresql.conf
+      - templates/9.6/main/start.conf
+    notify: restart postgresql
+
+  # initdb stuff
+  # - name: ensure correct access rights on data dir

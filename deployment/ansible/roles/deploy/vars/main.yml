@@ -1,0 +1,5 @@
+project_name: "worldinfilms"
+project_root: "/var/uwsgi/apps/worldinfilms"
+project_repo: "git@github.com:atombrella/worldinfilms.git"
+virtualenv: "/var/uwsgi/apps/worldinfilms/venv"
+app_root: "/var/uwsgi/apps/worldinfilms/worldinfilms"

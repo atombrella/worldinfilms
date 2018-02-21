@@ -1,0 +1,6 @@
+---
+  - name: install fail2ban
+    apt: name=fail2ban state=installed
+
+  - name: start fail2ban service
+    service: name=fail2ban state=started

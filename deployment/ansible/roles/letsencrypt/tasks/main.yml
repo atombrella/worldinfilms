@@ -1,0 +1,40 @@
+  - name: update the apt cache
+    apt: update_cache=yes
+    become_user: root
+
+  - name: add certbot apt ppa repository
+    apt_repository:
+      repo: "ppa:certbot/certbot"
+    become_user: root
+
+  - name: install certbot ubuntu
+    apt: pkg={{item}} state=latest
+    with_items:
+      - certbot
+    become_user: root
+
+  - name: change the path to letsencrypt
+    set_fact:
+      letsencrypt_path: "/usr/bin/letsencrypt"
+
+  - name: renew certificates
+    cron:
+      name: "renew certificates"
+      user: "root"
+      minute: "30"
+      hour: "03,15"
+      job: "certbot renew --non-interactive"
+    become_user: root
+
+  - name: remove letsencrypt log files frequently
+    cron:
+      name: "don't store log files forever"
+      user: "root"
+      minute: "30"
+      hour: "1"
+      day: 1
+      job: "rm /var/log/letsencrypt/*.log.*"
+    become_user: root
+
+  # - name: request certificates
+  #   include_tasks: requests.yml

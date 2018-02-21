@@ -13,7 +13,7 @@
   - name: Unactivate default site
     file: path=/etc/nginx/sites-enabled/default state=absent
     notify:
-        - restart nginx
+      - restart nginx
 
   - name: Unactivate default site
     file: path=/etc/nginx/sites-available/default state=absent
@@ -24,13 +24,16 @@
     copy: src=etc/nginx/nginx.conf dest=/etc/nginx/nginx.conf mode=0644
 
   - name: Create configuration file
-    copy: src=sites-available/worldinfilms dest=/etc/nginx/sites-availble/worldinfilms mode=0644
+    copy:
+      src=templates/nginx/sites-available/worldinfilms
+      dest=/etc/nginx/sites-available/worldinfilms
+      mode=0644
     notify:
       - restart nginx
 
   - name: Make symlink to sites-enabled
     file:
-      src: /etc/nginx/sites-available/worldinfilms
-      dest: /etc/nginx/sites-enabled/worldinfilms
-      ensure: present
-      type: symlink
+      src=/etc/nginx/sites-available/worldinfilms
+      path=/etc/nginx/sites-enabled/worldinfilms
+      state=link
+      mode=0644

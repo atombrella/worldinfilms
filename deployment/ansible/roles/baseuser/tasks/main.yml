@@ -5,10 +5,35 @@
   - name: create user mads
     user: name=mads shell=/bin/bash groups=sudo,admin,mads
 
+  - name: create group worldinfilms
+    group: name=worldinfilms state=present
+
+  - name: Make deployment user
+    user: name=worldinfilms shell=/bin/bash groups=www-data
+
+  - name: Create SSH folder
+    file:
+      path: /home/worldinfilms/.ssh
+      state: directory
+
+  - name: Set authorized key took from file
+    authorized_key:
+      user: worldinfilms
+      state: present
+      key: "{{ lookup('file', '/home/mads/.ssh/id_rsa.pub') }}"
+
   - name: Create SSH folder
     file:
       path: /home/mads/.ssh
       state: directory
+
+  - name: Make private key
+    copy:
+      src: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+      dest: /home/worldinfilms/.ssh/id_rsa
+      mode: 0600
+      owner: worldinfilms
+      group: worldinfilms
 
   - name: Set authorized key took from file
     authorized_key:

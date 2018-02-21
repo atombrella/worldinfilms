@@ -1,17 +1,16 @@
 ---
   - name: Create django postgres user
-    postgresql_user: name={{db_user}} password={{db_password}}
-    become: true
+    postgresql_user: name={{ db_user }} password={{ db_password }}
     become_user: postgres
 
   - name: Create postgres database
-    postgresql_db: name={{db_name}}
-               owner={{db_user}}
-               encoding='UTF-8'
-               lc_collate={{ db_locale }}
-               lc_ctype={{ db_locale }}
-               template='template1'
-    become: true
+    postgresql_db:
+      name={{ db_name }}
+      owner={{ db_user }}
+      encoding='UTF-8'
+      lc_collate={{ db_locale }}
+      lc_ctype={{ db_locale }}
+      template='template1'
     become_user: postgres
 
   - name: Grant database rights to app user
@@ -22,5 +21,4 @@
         type=database
         obj={{ db_name }}
         role={{ db_user }}
-    become: true
     become_user: postgres

@@ -1,4 +1,0 @@
----
-  project_name: worldinfilms
-  project_root: /var/uwsgi/apps/worldinfilms
-  project_repo: git@github.com:atombrella/worldinfilms.git

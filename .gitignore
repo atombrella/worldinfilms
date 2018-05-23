@@ -105,3 +105,6 @@ node_modules
 
 # Ansible
 *.retry
+
+# Lock files from different services
+*.lock

@@ -1,4 +1,5 @@
-ansible>=2.4
-wagtail>=1.13,<2.0
+django>=2.0,<2.1
+ansible==2.5.3
+wagtail>=2.0,<=2.1
 psycopg2-binary>=2.7
 # wagalytics

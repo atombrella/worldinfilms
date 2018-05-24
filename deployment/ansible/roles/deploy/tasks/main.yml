@@ -36,6 +36,7 @@
       pip:
         name=pip
         virtualenv={{ virtualenv }}
+        state=forcereinstall
       become_user: worldinfilms
 
     - name: Install pip requirements
@@ -52,4 +53,5 @@
         virtualenv="{{ virtualenv }}"
         settings="website.settings.dev"
       become_user: worldinfilms
-      # need the database password here
+      environment:
+        WORLDINFILMS_DB_PASSWORD: '{{ db_password }}'

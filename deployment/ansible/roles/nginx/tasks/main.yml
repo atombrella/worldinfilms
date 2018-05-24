@@ -1,11 +1,11 @@
 ---
   - name: Installs nginx web server
-    apt: pkg=nginx state=installed update_cache=true
+    apt: pkg=nginx state=present update_cache=true
     notify:
       - start nginx
 
   - name: Remove index.html for host
-    file: path=/usr/share/nginx/www/index.html state=absent
+    file: path=/usr/share/nginx/html/index.html state=absent
 
   - name: Create nginx include directory
     file: path=/etc/nginx/includes state=directory
@@ -13,23 +13,15 @@
   - name: Unactivate default site
     file: path=/etc/nginx/sites-enabled/default state=absent
     notify:
-      - restart nginx
-
-  - name: Unactivate default site
-    file: path=/etc/nginx/sites-available/default state=absent
-    notify:
-      - restart nginx
-
-  - name: Create general nginx settings
-    copy: src=etc/nginx/nginx.conf dest=/etc/nginx/nginx.conf mode=0644
+      - reload nginx
 
   - name: Create configuration file
     copy:
       src=templates/nginx/sites-available/worldinfilms
       dest=/etc/nginx/sites-available/worldinfilms
       mode=0644
-    notify:
-      - restart nginx
+      owner=www-data
+      group=www-data
 
   - name: Make symlink to sites-enabled
     file:
@@ -37,3 +29,28 @@
       path=/etc/nginx/sites-enabled/worldinfilms
       state=link
       mode=0644
+      owner=www-data
+      group=www-data
+    notify:
+      - reload nginx
+
+  - name: Create nginx caching configuration
+    copy:
+      src=etc/nginx/conf.d/expires.conf
+      dest=/etc/nginx/conf.d/expires.conf
+      owner=www-data
+      group=www-data
+      mode=0644
+    notify:
+      - reload nginx
+
+  - name: Create nginx.service file
+    copy:
+      src=lib/systemd/system/nginx.service
+      dest=/lib/systemd/system/nginx.service
+      owner=root
+      group=root
+      mode=0644
+    notify:
+      - systemd daemon-reload
+      - restart nginx

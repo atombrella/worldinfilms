@@ -1,12 +1,23 @@
+upstream django {
+   server unix:/var/run/uwsgi/worldinfilms.socket;
+}
+
 server {
-    server_name worldinfilms.dk;
+     listen      80;
+     server_name 159.89.106.186;
+     charset     utf-8;
 
-    access_log off;
+     # max upload size
+     client_max_body_size 75M;   # adjust to taste
 
-    location / {
-        proxy_pass http://127.0.0.1:8000;
-        proxy_set_header X-Forwarded-Host $server_name;
-        proxy_set_header X-Real-IP $remote_addr;
-        add_header P3P 'CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"';
-    }
+     # Send all non-media requests to the Django server.
+     location / {
+         include     /etc/nginx/uwsgi_params;
+         uwsgi_pass  django;
+     }
+
+     location /static {
+        autoindex off;
+        alias /var/uwsgi/apps/worldinfilms/website/website/static;
+     }
 }

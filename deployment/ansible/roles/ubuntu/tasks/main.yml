@@ -21,3 +21,7 @@
   - name: Remove dependencies that are no longer required
     apt:
       autoremove: yes
+
+  - name: set hostname
+    hostname:
+      name: worldinfilms.dk

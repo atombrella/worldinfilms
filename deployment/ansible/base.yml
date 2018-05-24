@@ -1,6 +1,7 @@
 ---
 
   - hosts: droplet
+    gather_facts: false
     roles:
       - security
       - unattended-upgrades

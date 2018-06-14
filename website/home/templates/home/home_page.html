@@ -1,11 +1,29 @@
 {% extends "base.html" %}
 
-{% block body_class %}template-homepage{% endblock %}
+{% load wagtailimages_tags wagtailcore_tags %}
 
 {% block content %}
-    <h1>Welcome to your new Wagtail site!</h1>
 
-    <p>You can access the admin interface <a href="{% url 'wagtailadmin_home' %}">here</a> (make sure you have run "./manage.py createsuperuser" in the console first).</p>
+  {% if page.body %}
+    <div class="container-fluid streamfield">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7 streamfield-column">
+            {{ page.body|richtext }}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
 
-    <p>If you haven't already given the documentation a read, head over to <a href="http://docs.wagtail.io/">http://docs.wagtail.io</a> to start building on Wagtail</p>
+  {% comment %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9 col-lg-9 col-sm-9">
+        {{ self.body|richtext }}
+      </div>
+    </div>
+  </div>
+  {% endcomment %}
+
 {% endblock %}

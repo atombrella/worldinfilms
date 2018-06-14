@@ -3,6 +3,7 @@ Description=uWSGI Emperor
 After=syslog.target
 
 [Service]
+ExecStartPre=/bin/bash ‐c "sudo mkdir /var/run/uwsgi; sudo chown www-data:www-data /var/run/uwsgi"
 ExecStart=/usr/bin/uwsgi --ini /etc/uwsgi/emperor.ini
 ExecReload=/bin/kill -HUP $MAINPID
 ExecStop=/bin/kill -INT $MAINPID

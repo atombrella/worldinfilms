@@ -29,6 +29,8 @@ INSTALLED_APPS = [
 
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
+    'wagtail.contrib.routable_page',
+    'wagtail.contrib.modeladmin',
     'wagtail.embeds',
     'wagtail.sites',
     'wagtail.users',
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
 
     'modelcluster',
     'taggit',
+    'wagtailmenus',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -78,6 +81,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'wagtailmenus.context_processors.wagtailmenus',
             ],
         },
     },
@@ -94,7 +98,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'worldinfilms',
         'USER': 'worldinfilms',
-        'PASSWORD': os.getenv('WORLDINFILMS_DB_PASSWORD'),
+        'PASSWORD': os.getenv('WORLDINFILMS_DB_PASSWORD', 'password'),
         'HOST': 'localhost',
         'PORT': 5432,
     }
@@ -135,7 +139,7 @@ MEDIA_URL = '/media/'
 
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = "worldinfilms"
+WAGTAIL_SITE_NAME = "World in Films"
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash

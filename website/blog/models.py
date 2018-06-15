@@ -73,7 +73,7 @@ class BlogPage(RoutablePageMixin, Page):
         self.search_type = 'tag'
         self.search_term = tag
         self.posts = self.get_posts().filter(tags__slug=tag)
-        return Page.serve(self, request, *args, **kwargs)
+        return super().serve(request, *args, **kwargs)
 
     @route(r'^category/(?P<category>[-\w]+)/$')
     def post_by_category(self, request, category, *args, **kwargs):
@@ -96,6 +96,7 @@ class BlogPage(RoutablePageMixin, Page):
         FieldPanel('date'),
         FieldPanel('intro'),
         FieldPanel('body', classname="full"),
+        FieldPanel('tags', classname="full"),
         InlinePanel('gallery_images', label="Gallery images"),
     ]
 

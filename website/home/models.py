@@ -27,5 +27,3 @@ class HomePage(Page):
 
     def __str__(self):
         return self.title
-
-

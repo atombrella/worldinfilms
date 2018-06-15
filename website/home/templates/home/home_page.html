@@ -4,16 +4,6 @@
 
 {% block content %}
 
-  {% if page.body %}
-    <div class="container-fluid streamfield">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-7 streamfield-column">
-            {{ page.body|richtext }}
-          </div>
-        </div>
-      </div>
-    </div>
-  {% endif %}
+  {{ page.body|richtext }}
 
 {% endblock %}

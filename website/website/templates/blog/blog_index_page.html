@@ -1,22 +1,27 @@
-{% extends "base.html" %}
+{% extends "blog/base.html" %}
 
 {% load wagtailcore_tags wagtailimages_tags %}
 
-{% block content %}
+{% block pagecontent %}
   <h1>{{ page.title }}</h1>
 
-  <div class="intro">{{ page.intro|richtext }}</div>
+  {{ page.intro|richtext }}
 
-  {% for post in blogpages %}
+  {% for post in self.get_children %}
     {% with post=post.specific %}
-      <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
+      <div class="card mb-4">
+        <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+          <div class="card-body">
+            <h2 class="card-title">{{ post.title }}</h2>
 
-      {% with post.main_image as main_image %}
-        {% if main_image %}{% image main_image fill-160x100 %}{% endif %}
-      {% endwith %}
+              {{ post.intro|richtext }}
 
-      <p>{{ post.intro }}</p>
-      {{ post.body|richtext }}
+            <a href="{{ post.url }}" class="btn btn-primary">Read More &rarr;</a>
+          </div>
+          <div class="card-footer text-muted">
+          Posted {{ post.date|date }}
+        </div>
+      </div>
     {% endwith %}
   {% endfor %}
 

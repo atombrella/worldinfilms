@@ -1,8 +1,6 @@
-{% extends "base.html" %}
+{% extends "blog/base.html" %}
 
 {% load static wagtailuserbar wagtailcore_tags %}
-
-hello, world
 
 {% block extra_css %}
 <style>
@@ -17,7 +15,7 @@ hello, world
 </style>
 {% endblock %}
 
-{% block content %}
+{% block pagecontent %}
 
   <h1>{{ page.title }}</h1>
   <p class="meta">{{ page.date }}</p>
@@ -25,6 +23,10 @@ hello, world
   <div class="intro dropcaps">{{ page.intro }}</div>
 
   {{ page.body|richtext }}
+
+  <div class="">
+
+  </div>
 
   <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
 {% endblock %}

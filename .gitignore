@@ -108,3 +108,6 @@ node_modules
 
 # Lock files from different services
 *.lock
+
+# Django upload path
+media

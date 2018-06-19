@@ -36,6 +36,15 @@ class BlogIndexPage(Page):
         FieldPanel('intro', classname="full")
     ]
 
+    @classmethod
+    def allowed_subpage_models(cls):
+        return [BlogPage, BlogTagIndexPage]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context['categories'] = BlogCategory.objects.order_by('name')
+        return context
+
 
 class BlogPageTag(TaggedItemBase):
     content_object = ParentalKey('BlogPage', related_name='tagged_items')
@@ -57,6 +66,14 @@ class BlogPage(RoutablePageMixin, Page):
     intro = models.CharField(max_length=250)
     body = RichTextField(blank=True)
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+        help_text='Landscape mode only; horizontal width between 1000px and 3000px.'
+    )
 
     def main_image(self):
         gallery_item = self.gallery_images.first()
@@ -95,6 +112,7 @@ class BlogPage(RoutablePageMixin, Page):
     content_panels = Page.content_panels + [
         FieldPanel('date'),
         FieldPanel('intro'),
+        ImageChooserPanel('image'),
         FieldPanel('body', classname="full"),
         FieldPanel('tags', classname="full"),
         InlinePanel('gallery_images', label="Gallery images"),

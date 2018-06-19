@@ -4,7 +4,7 @@ from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 from wagtail.images.edit_handlers import ImageChooserPanel
 
-from blog.models import BlogPage
+from blog.models import BlogPage, BlogIndexPage
 
 
 class HomePage(Page):
@@ -24,6 +24,10 @@ class HomePage(Page):
         PageChooserPanel('featured'),
         ImageChooserPanel('image'),
     ]
+
+    @classmethod
+    def allowed_subpage_models(cls):
+        return [BlogIndexPage]
 
     def __str__(self):
         return self.title

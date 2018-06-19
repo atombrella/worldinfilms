@@ -1,6 +1,6 @@
 {% extends "blog/base.html" %}
 
-{% load static wagtailuserbar wagtailcore_tags %}
+{% load static wagtailuserbar wagtailcore_tags wagtailimages_tags %}
 
 {% block extra_css %}
 <style>
@@ -17,16 +17,21 @@
 
 {% block pagecontent %}
 
+  <span class="m-4"></span>
+
+  {% if page.image %}
+    {% image page.image original as blog_image %}
+    <div class="card mb-4">
+      <img class="card-img-top" src="{{ blog_image.url }}"  alt="{{ blog_image.default_alt_text }}">
+    </div>
+  {% endif %}
+
   <h1>{{ page.title }}</h1>
   <p class="meta">{{ page.date }}</p>
 
   <div class="intro dropcaps">{{ page.intro }}</div>
 
   {{ page.body|richtext }}
-
-  <div class="">
-
-  </div>
 
   <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
 {% endblock %}

@@ -15,18 +15,33 @@ from wagtail.snippets.models import register_snippet
 class BlogCategory(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, max_length=80)
+    description = models.CharField(max_length=500, blank=True)
 
     panels = [
         FieldPanel('name'),
         FieldPanel('slug'),
+        FieldPanel('description', classname='full')
     ]
 
     def __str__(self):
         return self.name
 
     class Meta:
+        ordering = ['name']
         verbose_name = "Category"
         verbose_name_plural = "Categories"
+
+
+class BlogCategoryBlogPage(models.Model):
+    category = models.ForeignKey(
+        BlogCategory, related_name="+", verbose_name='Category',
+        on_delete=models.CASCADE,
+    )
+    page = ParentalKey('BlogPage', related_name='categories')
+
+    panels = [
+        FieldPanel('category'),
+    ]
 
 
 class BlogIndexPage(Page):
@@ -74,6 +89,11 @@ class BlogPage(RoutablePageMixin, Page):
         related_name='+',
         help_text='Landscape mode only; horizontal width between 1000px and 3000px.'
     )
+    blog_categories = models.ManyToManyField(BlogCategory, through=BlogCategoryBlogPage, blank=True)
+
+    @classmethod
+    def allowed_subpage_models(cls):
+        return []
 
     def main_image(self):
         gallery_item = self.gallery_images.first()
@@ -115,6 +135,7 @@ class BlogPage(RoutablePageMixin, Page):
         ImageChooserPanel('image'),
         FieldPanel('body', classname="full"),
         FieldPanel('tags', classname="full"),
+        FieldPanel('blog_categories', classname="full"),
         InlinePanel('gallery_images', label="Gallery images"),
     ]
 

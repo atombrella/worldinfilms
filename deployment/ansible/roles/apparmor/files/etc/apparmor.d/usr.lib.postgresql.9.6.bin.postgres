@@ -1,0 +1,10 @@
+# Last Modified: Tue Jun 19 12:18:48 2018
+#include <tunables/global>
+
+/usr/lib/postgresql/9.6/bin/postgres {
+  #include <abstractions/base>
+  #include <abstractions/openssl>
+
+  /usr/lib/postgresql/9.6/bin/postgres mr,
+
+}

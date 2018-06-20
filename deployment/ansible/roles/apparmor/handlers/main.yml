@@ -1,0 +1,7 @@
+---
+
+  - name: restart apparmor
+    service: name=apparmor state=restarted
+
+  - name: restart auditd
+    service: name=auditd state=restarted

@@ -1,0 +1,19 @@
+#include <tunables/global>
+
+/usr/bin/uwsgi-core {
+  #include <abstractions/base>
+  #include <abstractions/lxc/start-container>
+  #include <abstractions/apache2-common>
+
+  /etc/group r,
+  /etc/nsswitch.conf r,
+  /etc/passwd r,
+  /etc/uwsgi/emperor.ini r,
+  /etc/uwsgi/vassals/ r,
+  /etc/uwsgi/vassals/* r,
+  /run/uwsgi.pid w,
+  /run/uwsgi/* w,
+  /usr/local/lib/python3.5/dist-packages/ r,
+  /var/log/uwsgi.log rw,
+  /var/uwsgi/apps/** r,
+}

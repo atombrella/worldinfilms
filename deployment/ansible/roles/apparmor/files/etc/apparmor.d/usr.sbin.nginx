@@ -1,0 +1,20 @@
+#include <tunables/global>
+
+/usr/sbin/nginx {
+  #include <abstractions/apache2-common>
+  #include <abstractions/base>
+  #include <abstractions/lxc/container-base>
+
+  capability dac_read_search,
+  capability net_bind_service,
+  capability setgid,
+  capability setuid,
+
+  /etc/nginx/* r,
+  /etc/nginx/sites-available/* r,
+  /etc/ssl/openssl.cnf r,
+  /run/nginx.pid rw,
+  /run/uwsgi/* rw,
+  /usr/sbin/nginx mr,
+  /var/log/nginx/*.log w,
+}

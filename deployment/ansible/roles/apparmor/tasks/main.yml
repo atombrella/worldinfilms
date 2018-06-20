@@ -1,0 +1,37 @@
+---
+
+  - name: install apparmor packages
+    apt: name={{ item }} state=present
+    with_items:
+      - apparmor
+      - apparmor-utils
+      - auditd
+
+  - name: start apparmor and auditd
+    service: name={{ apparmor }} state=started
+    with_items:
+      - apparmor
+      - auditd
+
+  - name: activate kernel apparmor
+    lineinfile: >
+      dest='/etc/default/grub'
+      regexp='^GRUB_CMDLINE_LINUX=""'
+      line='GRUB_CMDLINE_LINUX=apparmor="1 security=apparmor"'
+      state=present
+
+  - name:
+    copy: src={{ item.src }} dest={{ item.dest }} mode=0644 owner=root group=root
+    with_items:
+      - { src: etc/apparmor.d/usr.bin.uwsgi, dest: /etc/apparmor.d/usr.bin.uwgsi }
+      - { src: etc/apparmor.d/usr.bin.nginx, dest: /etc/apparmor.d/usr.sbin.nginx }
+      - { src: etc/apparmor.d/usr.bin.sshd, dest: /etc/apparmor.d/ }
+      - {
+          src: etc/apparmor.d/usr.lib.postgresql.9.6.bin.postgres,
+          dest: /etc/apparmor.d/usr.lib.postgresql.9.6.bin.postgres
+        }
+    notify:
+      - restart apparmor
+      - restart sshd
+      - restart nginx
+      - restart uwsgi

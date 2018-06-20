@@ -1,14 +1,39 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from taggit.models import TaggedItemBase
 from wagtail.contrib.routable_page.models import route, RoutablePageMixin
+from wagtail.core.blocks import BlockQuoteBlock, PageChooserBlock, RichTextBlock
 from wagtail.core.models import Page, Orderable
-from wagtail.core.fields import RichTextField
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel
+from wagtail.core.fields import RichTextField, StreamField
+from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, StreamFieldPanel
+from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
+from wagtail.snippets.blocks import SnippetChooserBlock
 from wagtail.snippets.models import register_snippet
+
+
+@register_snippet
+class Quote(models.Model):
+    quote = models.CharField(max_length=1024)
+    movie = models.CharField(max_length=255)
+    actor = models.CharField(max_length=255)
+    year = models.PositiveIntegerField(
+        validators=[MinValueValidator(limit_value=1900), MaxValueValidator(limit_value=2050)],
+    )
+    imdb = models.URLField(blank=False, null=False)
+
+    def __str__(self):
+        return self.quote
+
+
+class QuoteChooserBlock(SnippetChooserBlock):
+
+    class Meta:
+        icon = "openquote"
+        template = "blog/snippets/quote.html"
 
 
 @register_snippet
@@ -79,7 +104,12 @@ class BlogTagIndexPage(Page):
 class BlogPage(RoutablePageMixin, Page):
     date = models.DateField("Post date")
     intro = models.CharField(max_length=250)
-    body = RichTextField(blank=True)
+    body = StreamField([
+        ('main', RichTextBlock(classname="full")),
+        ('quote', QuoteChooserBlock(target_model=Quote)),
+        ('related', PageChooserBlock(target_model='self')),
+        ('embedded_video', EmbedBlock(icon="media")),
+    ], null=False, blank=False)
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
     image = models.ForeignKey(
         'wagtailimages.Image',
@@ -133,7 +163,7 @@ class BlogPage(RoutablePageMixin, Page):
         FieldPanel('date'),
         FieldPanel('intro'),
         ImageChooserPanel('image'),
-        FieldPanel('body', classname="full"),
+        StreamFieldPanel('body'),
         FieldPanel('tags', classname="full"),
         FieldPanel('blog_categories', classname="full"),
         InlinePanel('gallery_images', label="Gallery images"),

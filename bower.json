@@ -1,0 +1,17 @@
+{
+  "name": "worldinfilms",
+  "authors": [
+    "Mads Jensen <mje@inducks.org>"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~4.1.1"
+  }
+}

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load wagtailcore_tags wagtailimages_tags static %}
+{% load wagtailcore_tags wagtailimages_tags wagtailroutablepage_tags static %}
 
 {% block content %}
 
@@ -25,12 +25,15 @@
 
     {% block sidecols %}
       {% if categories %}
-      <div class="col-md-4">
-        <ul class="">
-        {% for category in categories %}
-          <li class=""><a href="{{ category.slug }}">{{ category.name }}</a></li>
-        {% endfor %}
-        </ul>
+      <div class="card my-4">
+        <div class="card-header">Categories</div>
+        <div class="card-body" role="menu">
+          <ul class="list-group">
+          {% for category in categories %}
+            <li class="list-group-item"><a href="#">{{ category.name }}</a></li>
+          {% endfor %}
+          </ul>
+        </div>
       </div>
       {% endif %}
     {% endblock %}

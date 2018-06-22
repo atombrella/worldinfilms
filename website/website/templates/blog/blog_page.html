@@ -1,20 +1,7 @@
 {% extends "blog/base.html" %}
 
 {% load static wagtailuserbar wagtailcore_tags wagtailimages_tags wagtailembeds_tags %}
-
-{% block extra_css %}
-<style>
-  .richtext p:first-of-type:first-letter, .dropcaps:first-of-type:first-letter {
-    height: 0.7em;
-    margin: 0.08em 0 -0.05em 0;
-    padding: 0 0.065em 0 0;
-    font-size: 5em;
-    line-height: 0.85em;
-    float: left;
-    text-color: red;
-  }
-</style>
-{% endblock %}
+{% load wagtailroutablepage_tags %}
 
 {% block pagecontent %}
 
@@ -35,5 +22,16 @@
   {# todo get this styled properly #}
   {% include_block page.body %}
 
-  <p><a role="link" href="{{ page.get_parent.url }}">Return to blog</a></p>
+  {% comment %}
+    {% if page.tags %}
+      <div class="tags">
+        <span class="text-bolder">Posted in </span>
+        {% for tag in page.tags.all %}
+          <a href="#" class="btn btn-outline-dark">{{ tag }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endcomment %}
+
+  <p class="backlink"><a role="link" class="btn btn-primary" href="{{ page.get_parent.url }}">Return to blog</a></p>
 {% endblock %}

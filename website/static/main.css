@@ -1,0 +1,29 @@
+.block-related::before {
+  font-weight: bolder;
+  content: "See also ";
+  color: red;
+  font-size: 110%;
+}
+
+.block-related {
+  margin-bottom: 20px;
+}
+
+div.dropcaps:first-of-type:first-letter {
+  height: 0.7em;
+  margin: 0.08em 0 -0.05em 0;
+  padding: 0 0.065em 0 0;
+  font-size: 5em;
+  line-height: 0.85em;
+  float: left;
+}
+
+a.backlink {
+  padding-left: 10px;
+  font-weight: bolder;
+}
+
+.tags {
+  padding-bottom: 15px;
+  line-height: 3px;
+}

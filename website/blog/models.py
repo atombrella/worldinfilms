@@ -4,7 +4,7 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from taggit.models import TaggedItemBase
 from wagtail.contrib.routable_page.models import route, RoutablePageMixin
-from wagtail.core.blocks import BlockQuoteBlock, PageChooserBlock, RichTextBlock
+from wagtail.core.blocks import PageChooserBlock, RichTextBlock
 from wagtail.core.models import Page, Orderable
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, StreamFieldPanel
@@ -30,6 +30,9 @@ class Quote(models.Model):
 
 
 class QuoteChooserBlock(SnippetChooserBlock):
+
+    def __init__(self, target_model=Quote, **kwargs):
+        super().__init__(target_model, **kwargs)
 
     class Meta:
         icon = "openquote"
@@ -67,6 +70,9 @@ class BlogCategoryBlogPage(models.Model):
     panels = [
         FieldPanel('category'),
     ]
+
+    class Meta:
+        auto_created = True
 
 
 class BlogIndexPage(Page):
@@ -107,7 +113,7 @@ class BlogPage(RoutablePageMixin, Page):
     body = StreamField([
         ('main', RichTextBlock(classname="full")),
         ('quote', QuoteChooserBlock(target_model=Quote)),
-        ('related', PageChooserBlock(target_model='self')),
+        ('related', PageChooserBlock(target_model="blog.BlogPage")),
         ('embedded_video', EmbedBlock(icon="media")),
     ], null=False, blank=False)
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)

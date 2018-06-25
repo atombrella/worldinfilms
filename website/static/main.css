@@ -27,3 +27,8 @@ a.backlink {
   padding-bottom: 15px;
   line-height: 3px;
 }
+
+.meta {
+  text-size: smaller;
+  text-decoration: underline;
+}

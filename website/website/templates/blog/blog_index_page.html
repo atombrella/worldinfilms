@@ -11,7 +11,7 @@
 
   <hr>
 
-  {% for post in self.get_children %}
+  {% for post in posts %}
     {% with post=post.specific %}
       <div class="card mb-4">
         {% if post.image %}

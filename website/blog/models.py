@@ -71,9 +71,6 @@ class BlogCategoryBlogPage(models.Model):
         FieldPanel('category'),
     ]
 
-    class Meta:
-        auto_created = True
-
 
 class BlogIndexPage(Page):
     intro = RichTextField(blank=True)
@@ -89,6 +86,10 @@ class BlogIndexPage(Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
         context['categories'] = BlogCategory.objects.order_by('name')
+        # TODO deal with paging later
+        context['posts'] = self.get_descendants().type(
+            BlogPage
+        ).specific().live().order_by('-first_published_at')[:10]
         return context
 
 
@@ -108,8 +109,9 @@ class BlogTagIndexPage(Page):
 
 
 class BlogPage(RoutablePageMixin, Page):
+    subtitle = models.CharField(max_length=250, null=True, blank=True)
     date = models.DateField("Post date")
-    intro = models.CharField(max_length=250)
+    intro = RichTextField()
     body = StreamField([
         ('main', RichTextBlock(classname="full")),
         ('quote', QuoteChooserBlock(target_model=Quote)),
@@ -166,6 +168,7 @@ class BlogPage(RoutablePageMixin, Page):
     ]
 
     content_panels = Page.content_panels + [
+        FieldPanel('subtitle'),
         FieldPanel('date'),
         FieldPanel('intro'),
         ImageChooserPanel('image'),

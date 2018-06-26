@@ -1,0 +1,14 @@
+---
+  - name: copy etc files for network settings
+    copy: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode=0644
+    with_items:
+      - { src: etc/network/interfaces, dest: /etc/network/interfaces }
+      - { src: etc/hostname, dest: /etc/hostname }
+      - { src: etc/hosts, dest: /etc/hosts }
+
+  - name: adjust hostname for the server
+    hostname:
+      name: worldinfilms.dk
+
+  - name: do cloud.cfg setup
+    copy: src=etc/cloud/cloud.cfg dest=/etc/cloud/cloud.cfg owner=root group=root mode=0644

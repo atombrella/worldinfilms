@@ -49,4 +49,3 @@
 
   - name: Install fail2bban
     include: fail2ban.yml
-

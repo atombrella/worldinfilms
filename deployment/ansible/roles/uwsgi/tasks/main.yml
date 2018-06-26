@@ -6,6 +6,7 @@
       - uwsgi
       - uwsgi-plugin-python
       - uwsgi-plugin-python3
+      - memcached
 
   - name: Copy over uwsgi params
     copy: src=uwsgi/uwsgi_params dest=/etc/uwsgi/uwsgi_params

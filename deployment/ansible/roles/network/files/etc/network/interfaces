@@ -1,0 +1,13 @@
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+source /etc/network/interfaces.d/*
+
+iface eth0 inet6 static
+        pre-up modprobe ipv6
+        address 2a03:b0c0:3:d0::b3d:8001
+        netmask 64
+        gateway 2a03:b0c0:3:d0::1
+        autoconf 0
+        dns-nameservers 2001:4860:4860::8844 2001:4860:4860::8888 209.244.0.3

@@ -7,3 +7,4 @@
       - unattended-upgrades
       - baseuser
       - ubuntu
+      - network

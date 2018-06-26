@@ -3,7 +3,7 @@ upstream django {
 }
 
 server {
-     listen 80;
+     listen 443;
      listen [::]:443;
      server_name worldinfilms.dk;
      charset     utf-8;
@@ -24,8 +24,6 @@ server {
 
      location /media {
         autoindex off;
-        alias /var/uwsgi/apps/worldinfilms/website
+        alias /var/uwsgi/apps/worldinfilms/website/media;
      }
-
-     # remember the forward to ssl
 }

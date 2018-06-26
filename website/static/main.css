@@ -32,3 +32,8 @@ a.backlink {
   text-size: smaller;
   text-decoration: underline;
 }
+
+a {
+  text-underline: dashed;
+  color: black;
+}

@@ -3,6 +3,7 @@
   - hosts: all
     vars:
       - domain_name: "worldinfilms.dk, www.worldinfilms.dk"
+      - letsencrypt_cert_domains: "worldinfilms.dk, www.worldinfilms.dk"
     gather_facts: false
     roles:
       - nginx

@@ -1,0 +1,21 @@
+{% extends "blog/base.html" %}
+
+{% load static wagtailcore_tags %}
+
+{% block pagecontent %}
+
+  <span class="m-4"></span>
+
+  <h1 class="display-4">{{ page.title }}</h1>
+
+  <p class="meta">{{ page.date }}</p>
+
+  {% if page.subtitle %}
+    <div class="intro m-4 font-italic">{{ page.subtitle }}</div>
+  {% endif %}
+
+  <div class="dropcaps">
+    {{ page.body|richtext }}
+  </div>
+
+{% endblock %}

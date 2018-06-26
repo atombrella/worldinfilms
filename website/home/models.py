@@ -45,5 +45,9 @@ class GenericPage(Page):
         FieldPanel('body', classname="full"),
     ]
 
+    @classmethod
+    def allowed_subpage_models(cls):
+        return []
+
     def __str__(self):
         return self.__class__.__name__

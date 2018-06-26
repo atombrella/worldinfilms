@@ -15,10 +15,18 @@
     notify:
       - reload nginx
 
-  - name: Create configuration file
-    copy:
+  - name: Create configuration for HTTP
+    template:
       src=templates/nginx/sites-available/worldinfilms
       dest=/etc/nginx/sites-available/worldinfilms
+      mode=0644
+      owner=www-data
+      group=www-data
+
+  - name: Create configuration for HTTPS
+    template:
+      src=templates/nginx/sites-available/ssl
+      dest=/etc/nginx/sites-available/ssl
       mode=0644
       owner=www-data
       group=www-data

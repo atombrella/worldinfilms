@@ -6,7 +6,7 @@
       - letsencrypt_cert_domains: "worldinfilms.dk, www.worldinfilms.dk"
     gather_facts: false
     roles:
-      - nginx
-      - uwsgi
       - letsencrypt
       - deploy
+      - nginx
+      - uwsgi

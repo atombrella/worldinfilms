@@ -46,12 +46,27 @@
         virtualenv_python=python3.5
       become_user: worldinfilms
 
+    - name: Copy over production settings
+      template:
+        src: production.py
+        dest: /var/uwsgi/apps/worldinfilms/website/website/settings
+        owner: www-data
+        group: www-data
+        mode: 0644
+      become_user: worldinfilms
+
     - name: Migrate database
       django_manage:
         command=migrate
         app_path="{{ project_root }}/website/"
         virtualenv="{{ virtualenv }}"
-        settings="website.settings.dev"
+        settings="website.settings.production"
       become_user: worldinfilms
-      environment:
-        WORLDINFILMS_DB_PASSWORD: '{{ db_password }}'
+
+    - name: create static files
+      django_manage:
+        command=collectstatic
+        app_path="{{ project_root }}/website/"
+        virtualenv="{{ virtualenv }}"
+        settings="website.settings.production"
+      become_user: worldinfilms

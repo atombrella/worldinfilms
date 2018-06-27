@@ -24,18 +24,25 @@
   - name: Create /var/uwsgi folder
     file: path=/var/uwsgi owner=worldinfilms group=worldinfilms state=directory mode=0755
 
-  - name: Set owner and permissions on /tmp/{{ site_name }}.pid
-    file: path=/tmp/{{ site_name }}.pid owner=worldinfilms group=worldinfilms
+  - name: Set owner and permissions on /tmp/worldinfilms.pid
+    file: path=/tmp/worldinfilms.pid mode=0644 owner=worldinfilms group=worldinfilms
     ignore_errors: yes
 
   - name: Set owner and permissions on /var/uwsgi/
     file: path=/var/uwsgi/ mode=0775 owner=www-data group=www-data
 
-  - name: Create uwsgi.conf file
-    copy: src=etc/init/uwsgi.conf dest=/etc/init/uwsgi.conf owner=www-data group=www-data
-
   - name: Create socket directory
-    file: src=/var/log/uwsgi/ mode=0644 state=directory
+    file: path=/var/run/uwsgi/ mode=0644 state=directory owner=www-data group=www-data
 
   - name: Create /var/log/uwsgi directory
-    file: state=directory mode=0644
+    file: path=/var/log/uwsgi state=directory mode=0644 owner=www-data group=www-data
+
+  - name: copy over systemd configuration
+    copy:
+      src: lib/systemd/system/uwsgi.service
+      dest: /lib/systemd/system/uwsgi.service
+      owner: root
+      group: root
+      mode: 0644
+    notify:
+      - systemd daemon-reload

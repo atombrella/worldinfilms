@@ -112,3 +112,5 @@ bower_components/
 
 # Django upload path
 media
+
+website/website/static/

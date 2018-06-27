@@ -19,12 +19,12 @@ server {
 
      location /static {
         autoindex off;
-        alias /var/uwsgi/apps/worldinfilms/website/static;
+        alias /var/uwsgi/apps/worldinfilms/website/website/static;
      }
 
      location /media {
         autoindex off;
-        alias /var/uwsgi/apps/worldinfilms/website
+        alias /var/uwsgi/apps/worldinfilms/website/media/;
      }
 
      # remember the forward to ssl

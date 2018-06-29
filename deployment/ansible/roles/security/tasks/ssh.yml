@@ -1,0 +1,3 @@
+---
+  - name: Create sshd configuation
+    copy: src=etc/ssh/sshd_config dest=etc/ssh/sshd_config mode=0644 group=root owner=root

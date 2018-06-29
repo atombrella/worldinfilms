@@ -3,6 +3,8 @@ var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
+var minify = require('gulp-minify');
+var cleanCss = require('gulp-clean-css');
 
 var config = {
   bowerDir: './bower_components',
@@ -32,6 +34,8 @@ gulp.task('css', function() {
     outputStyle: 'compressed',
     includePaths: [config.bowerDir + '/bootstrap/scss'],
   }))
+  .pipe(minify())
+  .pipe(cleanCss())
   .pipe(sourcemaps.write())
   .pipe(gulp.dest(config.publicDir + '/css'));
 });

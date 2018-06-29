@@ -1,2 +1,0 @@
-  - name: systemd daemon-reload
-    systemd: daemon_reload=yes

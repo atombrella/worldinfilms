@@ -31,9 +31,6 @@
   - name: Set owner and permissions on /var/uwsgi/
     file: path=/var/uwsgi/ mode=0775 owner=www-data group=www-data
 
-  - name: Create socket directory
-    file: path=/var/run/uwsgi/ mode=0644 state=directory owner=www-data group=www-data
-
   - name: Create /var/log/uwsgi directory
     file: path=/var/log/uwsgi state=directory mode=0644 owner=www-data group=www-data
 

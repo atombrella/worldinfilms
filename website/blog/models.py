@@ -152,7 +152,7 @@ class BlogPage(RoutablePageMixin, Page):
 
     @route(r'^category/(?P<category>[-\w]+)/$')
     def post_by_category(self, request, category, *args, **kwargs):
-        self.search_type = 'category'
+        self.search_type = 'BlogCategory'
         self.search_term = category
         self.posts = self.get_posts().filter(categories__slug=category)
         return Page.serve(self, request, *args, **kwargs)

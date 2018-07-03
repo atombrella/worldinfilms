@@ -1,11 +1,10 @@
 from django.db import models
 
-from wagtail.admin.edit_handlers import (
-    FieldPanel, StreamFieldPanel, PageChooserPanel,
-)
+from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.snippets.models import register_snippet
 
 from blog.models import BlogPage, BlogIndexPage
 
@@ -51,3 +50,24 @@ class GenericPage(Page):
 
     def __str__(self):
         return self.__class__.__name__
+
+
+@register_snippet
+class Website(models.Model):
+    name = models.CharField(max_length=128)
+    url = models.URLField(null=False, blank=False)
+    description = models.CharField(max_length=200)
+
+    panels = [
+        FieldPanel('name'),
+        FieldPanel('url'),
+        FieldPanel('description', classname='full')
+    ]
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = ""
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        pass

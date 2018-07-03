@@ -5,7 +5,7 @@
       - start nginx
 
   - name: Remove index.html for host
-    file: path=/usr/share/nginx/html/index.html state=absent
+    file: path=/usr/share/nginx/html/index.nginx-debian.html state=absent
 
   - name: Create nginx include directory
     file: path=/etc/nginx/includes state=directory
@@ -17,28 +17,26 @@
 
   - name: Create configuration for HTTP
     template:
-      src=templates/nginx/sites-available/worldinfilms
-      dest=/etc/nginx/sites-available/worldinfilms
+      src=templates/nginx/sites-available/{{ item }}
+      dest=/etc/nginx/sites-available/{{ item }}
       mode=0644
       owner=www-data
       group=www-data
-
-  - name: Create configuration for HTTPS
-    template:
-      src=templates/nginx/sites-available/ssl
-      dest=/etc/nginx/sites-available/ssl
-      mode=0644
-      owner=www-data
-      group=www-data
+    with_items:
+      - worldinfilms
+      - ssl
 
   - name: Make symlink to sites-enabled
     file:
-      src=/etc/nginx/sites-available/worldinfilms
-      path=/etc/nginx/sites-enabled/worldinfilms
+      src=/etc/nginx/sites-available/{{ item }}
+      path=/etc/nginx/sites-enabled/{{ item }}
       state=link
       mode=0644
       owner=www-data
       group=www-data
+    with_items:
+      - worldinfilms
+      - ssl
     notify:
       - reload nginx
 

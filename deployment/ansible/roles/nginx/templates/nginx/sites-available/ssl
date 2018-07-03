@@ -3,13 +3,37 @@ upstream django {
 }
 
 server {
-     listen 443;
-     listen [::]:443;
+    server_name www.worldinfilms.dk;
+
+    ssl on;
+    ssl_certificate /etc/letsencrypt/live/worldinfilms.dk/cert.pem;
+    ssl_certificate_key /etc/letsencrypt/live/worldinfilms.dk/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/worldinfilms.dk/fullchain.pem;
+
+    return 302 https://worldinfilms.dk$request_uri;
+}
+
+server {
+     listen 443 ssl;
+     listen [::]:443 ssl;
      server_name worldinfilms.dk;
      charset     utf-8;
 
+     ssl on;
+     ssl_certificate /etc/letsencrypt/live/worldinfilms.dk/cert.pem;
+     ssl_certificate_key /etc/letsencrypt/live/worldinfilms.dk/privkey.pem;
+     ssl_trusted_certificate /etc/letsencrypt/live/worldinfilms.dk/fullchain.pem;
+
+     ssl_session_timeout 1d;
+     ssl_session_cache shared:SSL:50m;
+
+     ssl_stapling on;
+     ssl_stapling_verify on;
+
+     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload;" always;
+
      # max upload size
-     client_max_body_size 75M;   # adjust to taste
+     client_max_body_size 10M;   # adjust to taste
 
      # Send all non-media requests to the Django server.
      location / {

@@ -1,31 +1,5 @@
-upstream django {
-   server unix:/var/run/uwsgi/worldinfilms.socket;
-}
-
 server {
      listen 80;
-     listen [::]:443;
-     server_name worldinfilms.dk;
-     charset     utf-8;
-
-     # max upload size
-     client_max_body_size 75M;   # adjust to taste
-
-     # Send all non-media requests to the Django server.
-     location / {
-         include     /etc/nginx/uwsgi_params;
-         uwsgi_pass  django;
-     }
-
-     location /static {
-        autoindex off;
-        alias /var/uwsgi/apps/worldinfilms/website/website/static;
-     }
-
-     location /media {
-        autoindex off;
-        alias /var/uwsgi/apps/worldinfilms/website/media/;
-     }
-
-     # remember the forward to ssl
+     server_name worldinfilms.dk www.worldinfilms.dk;
+     return 302 https://worldinfilms.dk$request_uri;
 }

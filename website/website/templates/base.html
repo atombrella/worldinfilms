@@ -18,11 +18,12 @@
     <meta name="description" content="Different ramblings about movies in different languages" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes" />
 
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'main.css' %}" type="text/css">
 
-    <script defer type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script defer type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.slim.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
 
     {% block extra_css %}
       {# Override this in templates to add extra stylesheets #}
@@ -65,12 +66,6 @@
         {% block content %} {% endblock %}
       </div>
     </div>
-
-    <footer class="bg-dark py-1">
-      <div class="container">
-        <p class="m-4 text-center text-white">Copyright &copy; Mads Jensen 2018</p>
-      </div>
-    </footer>
 
     {% block extra_js %}
       {# Override this in templates to add extra javascript #}

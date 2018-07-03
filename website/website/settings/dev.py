@@ -6,7 +6,6 @@ DEBUG = True
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('WORLDINFILMS_SECRET_KEY', 'not-a-secret')
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 

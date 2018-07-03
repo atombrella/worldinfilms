@@ -30,7 +30,11 @@
         <div class="card-body" role="menu">
           <ul class="list-group">
           {% for category in categories %}
-            <li class="list-group-item"><a href="#">{{ category.name }}</a></li>
+            <li class="list-group-item">
+              <a href="{% routablepageurl blog_page 'post_by_category' category.slug %}">
+                {{ category.name }}
+              </a>
+            </li>
           {% endfor %}
           </ul>
         </div>

@@ -1,12 +1,11 @@
 from django.db import models
-
 from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
 
-from blog.models import BlogPage, BlogIndexPage
+from blog.models import BlogIndexPage, BlogPage
 
 
 class HomePage(Page):

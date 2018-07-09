@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from wagtail.search.models import Query
+
 from .models import BlogPage
 
 

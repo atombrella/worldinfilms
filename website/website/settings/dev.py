@@ -1,6 +1,6 @@
-from .base import *  # noqa
-
 import os
+
+from .base import *  # noqa
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

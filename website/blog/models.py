@@ -1,15 +1,14 @@
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django import forms
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
-from taggit.models import TaggedItemBase
-from wagtail.contrib.routable_page.models import route, RoutablePageMixin
-from wagtail.core.blocks import PageChooserBlock, RichTextBlock
-from wagtail.core.models import Page, Orderable
-from wagtail.core.fields import RichTextField, StreamField
+from taggit.models import TaggedItemBase, Tag as TaggitTag
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, StreamFieldPanel
+from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+from wagtail.core.blocks import PageChooserBlock, RichTextBlock
+from wagtail.core.fields import RichTextField, StreamField
+from wagtail.core.models import Orderable, Page
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
@@ -50,7 +49,7 @@ class BlogCategory(models.Model):
     panels = [
         FieldPanel('name'),
         FieldPanel('slug'),
-        FieldPanel('description', classname='full')
+        FieldPanel('description', classname='full'),
     ]
 
     def __str__(self):
@@ -97,6 +96,13 @@ class BlogIndexPage(Page):
 
 class BlogPageTag(TaggedItemBase):
     content_object = ParentalKey('BlogPage', related_name='tagged_items')
+
+
+
+@register_snippet
+class Tag(TaggitTag):
+    class Meta:
+        proxy = True
 
 
 class BlogTagIndexPage(Page):

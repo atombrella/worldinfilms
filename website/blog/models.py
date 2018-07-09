@@ -1,7 +1,9 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django import forms
 from django.db import models
+
 from modelcluster.contrib.taggit import ClusterTaggableManager
-from modelcluster.fields import ParentalKey
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from taggit.models import TaggedItemBase
 from wagtail.contrib.routable_page.models import route, RoutablePageMixin
 from wagtail.core.blocks import PageChooserBlock, RichTextBlock
@@ -65,7 +67,7 @@ class BlogCategoryBlogPage(models.Model):
         BlogCategory, related_name="+", verbose_name='Category',
         on_delete=models.CASCADE,
     )
-    page = ParentalKey('BlogPage', related_name='categories')
+    page = ParentalKey('BlogPage', related_name='categories', null=True, blank=True)
 
     panels = [
         FieldPanel('category'),
@@ -110,8 +112,8 @@ class BlogTagIndexPage(Page):
 
 class BlogPage(RoutablePageMixin, Page):
     subtitle = models.CharField(max_length=250, null=True, blank=True)
-    date = models.DateField("Post date")
-    intro = RichTextField()
+    date = models.DateField("Post date", null=False)
+    intro = RichTextField(null=False, blank=False)
     body = StreamField([
         ('main', RichTextBlock(classname="full")),
         ('quote', QuoteChooserBlock(target_model=Quote)),
@@ -127,7 +129,7 @@ class BlogPage(RoutablePageMixin, Page):
         related_name='+',
         help_text='Landscape mode only; horizontal width between 1000px and 3000px.'
     )
-    blog_categories = models.ManyToManyField(BlogCategory, through=BlogCategoryBlogPage, blank=True)
+    blog_categories = ParentalManyToManyField(BlogCategory, through=BlogCategoryBlogPage, blank=True)
 
     @classmethod
     def allowed_subpage_models(cls):
@@ -174,7 +176,7 @@ class BlogPage(RoutablePageMixin, Page):
         ImageChooserPanel('image'),
         StreamFieldPanel('body'),
         FieldPanel('tags', classname="full"),
-        FieldPanel('blog_categories', classname="full"),
+        FieldPanel('blog_categories', classname="full", widget=forms.CheckboxSelectMultiple),
         InlinePanel('gallery_images', label="Gallery images"),
     ]
 

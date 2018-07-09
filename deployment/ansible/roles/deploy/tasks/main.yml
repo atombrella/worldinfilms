@@ -13,6 +13,7 @@
       version: master
       accept_hostkey: yes
       key_file: /home/worldinfilms/.ssh/id_rsa
+    tags: once
     become_user: worldinfilms
     run_once: true
 

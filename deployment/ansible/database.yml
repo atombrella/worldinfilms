@@ -1,6 +1,6 @@
 ---
 
   - hosts: droplet
+    gather_facts: false
     roles:
-      - postgresql
       - createdb

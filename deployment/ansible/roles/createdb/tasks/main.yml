@@ -12,13 +12,14 @@
       lc_ctype={{ db_locale }}
       template='template1'
     become_user: postgres
+    run_once: true
 
   - name: Grant database rights to app user
     postgresql_privs: >
-        db=postgres
-        state=present
-        privs=ALL
-        type=database
-        obj={{ db_name }}
-        role={{ db_user }}
+      db=postgres
+      state=present
+      privs=ALL
+      type=database
+      obj={{ db_name }}
+      role={{ db_user }}
     become_user: postgres

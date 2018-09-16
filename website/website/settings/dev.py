@@ -10,6 +10,8 @@ SECRET_KEY = os.getenv('WORLDINFILMS_SECRET_KEY', 'not-a-secret')
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+ALLOWED_HOSTS = ['localhost', 'lvh.me']
+
 
 try:
     from .local import *  # noqa

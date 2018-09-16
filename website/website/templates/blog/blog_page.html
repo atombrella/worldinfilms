@@ -1,7 +1,7 @@
 {% extends "blog/base.html" %}
 
-{% load static wagtailuserbar wagtailcore_tags wagtailimages_tags wagtailembeds_tags %}
-{% load wagtailroutablepage_tags %}
+{% load static wagtailuserbar wagtailcore_tags wagtailimages_tags %}
+{% load blogapp_tags %}
 
 {% block pagecontent %}
 
@@ -10,7 +10,7 @@
   {% if page.image %}
     {% image page.image original as blog_image %}
     <div class="card mb-4">
-      <img class="card-img-top" src="{{ blog_image.url }}"  alt="{{ blog_image.default_alt_text }}">
+      <img class="card-img-top" src="{{ blog_image.url }}" alt="{{ blog_image.default_alt_text }}">
     </div>
   {% endif %}
 
@@ -19,19 +19,11 @@
 
   <div class="intro dropcaps">{{ page.intro|richtext }}</div>
 
-  {# todo get this styled properly #}
   {% include_block page.body %}
 
-  {% comment %}
-    {% if page.tags %}
-      <div class="tags">
-        <span class="text-bolder">Posted in </span>
-        {% for tag in page.tags.all %}
-          <a href="#" class="btn btn-outline-dark">{{ tag }}</a>
-        {% endfor %}
-      </div>
-    {% endif %}
-  {% endcomment %}
+  {% tags_list page %}
 
-  <p class="backlink"><a role="link" class="btn btn-primary" href="{{ page.get_parent.url }}">Return to blog</a></p>
+  <p class="backlink">
+    <a role="link" class="btn btn-primary" href="{{ page.get_parent.url }}">Return to blog</a>
+  </p>
 {% endblock %}

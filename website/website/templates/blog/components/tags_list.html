@@ -1,0 +1,12 @@
+{% load wagtailroutablepage_tags %}
+
+<div class="tags">
+  <span class="text-bolder">Posted in </span>
+  {% for tag in tags %}
+
+    {% spaceless %}
+    <small><a href="/blog/tag/{{ tag.slug }}">
+      {{ tag }}</a>{% if not forloop.last %},{% endif %}</small>
+    {% endspaceless %}
+  {% endfor %}
+</div>

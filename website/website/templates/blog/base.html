@@ -4,44 +4,10 @@
 
 {% block content %}
 
+  <div class="col-md-2"></div>
   <div class="col-md-8">
     {% block pagecontent %} {% endblock %}
   </div>
-
-  <div class="col-md-4">
-    <div class="card my-4">
-      <h5 class="card-header">Search</h5>
-      <div class="card-body">
-        <form method="get" autocomplete="on" action="{% url 'search' %}">
-          <div class="input-group">
-            <input type="text" class="form-control" name="query" placeholder="Search for...">
-            <span class="input-group-btn">
-              <button class="btn btn-secondary" type="button">Go!</button>
-            </span>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    {# TODO this should be in the margin of the post, instead of a huge list #}
-    {% block sidecols %}
-      {% if categories %}
-      <div class="card my-4">
-        <div class="card-header">Categories</div>
-        <div class="card-body" role="menu">
-          <ul class="list-group">
-          {% for category in categories %}
-            <li class="list-group-item">
-              <a href="{% routablepageurl blog_page 'post_by_category' category.slug %}">
-                {{ category.name }}
-              </a>
-            </li>
-          {% endfor %}
-          </ul>
-        </div>
-      </div>
-      {% endif %}
-    {% endblock %}
-  </div>
+  <div class="col-md-2"></div>
 
 {% endblock %}

@@ -1,3 +1,7 @@
+body {
+  padding-top: 50px
+}
+
 .block-related::before {
   font-weight: bolder;
   content: "See also ";
@@ -30,5 +34,19 @@ a.backlink {
 
 .meta {
   text-size: smaller;
+  text-decoration: underline;
+}
+
+.rich-text > p {
+  text-align: justify;
+}
+
+.tags > small {
+  border: 1px solid black;
+  padding: 4px;
+}
+
+.tags > small > a {
+  color: black;
   text-decoration: underline;
 }

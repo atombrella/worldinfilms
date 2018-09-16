@@ -73,7 +73,7 @@ class BlogCategoryBlogPage(models.Model):
     ]
 
 
-class BlogIndexPage(Page):
+class BlogIndexPage(RoutablePageMixin, Page):
     intro = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
@@ -84,19 +84,42 @@ class BlogIndexPage(Page):
     def allowed_subpage_models(cls):
         return [BlogPage, BlogTagIndexPage]
 
+    @route(r'^tag/(?P<tag>[- \w]+)/$')
+    def post_by_tag(self, request, tag, *args, **kwargs):
+        self.posts = self.get_posts().filter(tags__slug=tag)
+        return Page.serve(self, request, *args, **kwargs)
+
+    @route(r'^category/(?P<category>[-\w]+)/$')
+    def post_by_category(self, request, category, *args, **kwargs):
+        self.posts = self.get_posts().filter(categories__slug=category)
+        return Page.serve(self, request, *args, **kwargs)
+
+    @route(r'^search/$')
+    def post_search(self, request, *args, **kwargs):
+        search_query = request.GET.get('q', None)
+        self.posts = self.get_posts()
+        if search_query:
+            self.posts = self.posts.filter(body__contains=search_query)
+            self.search_term = search_query
+            self.search_type = 'search'
+        return Page.serve(self, request, *args, **kwargs)
+
+    def get_posts(self):
+        return BlogPage.objects.descendant_of(self).live()
+
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        context['categories'] = BlogCategory.objects.order_by('name')
-        # TODO deal with paging later
-        context['posts'] = self.get_descendants().type(
-            BlogPage
-        ).specific().live().order_by('-first_published_at')[:10]
+        if hasattr(self, 'posts'):
+            context['posts'] = self.posts
+        else:
+            context['posts'] = self.get_descendants().type(
+                BlogPage
+            ).specific().live().order_by('-first_published_at')[:10]
         return context
 
 
 class BlogPageTag(TaggedItemBase):
     content_object = ParentalKey('BlogPage', related_name='tagged_items')
-
 
 
 @register_snippet

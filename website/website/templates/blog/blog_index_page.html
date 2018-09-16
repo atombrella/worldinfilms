@@ -3,6 +3,7 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
 {% block pagecontent %}
+  {% if not show_intro %}
   <span class="m-4"></span>
 
   <h1>{{ page.title }}</h1>
@@ -10,6 +11,7 @@
   {{ page.intro|richtext }}
 
   <hr>
+  {% endif %}
 
   {% for post in posts %}
     {% with post=post.specific %}

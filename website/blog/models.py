@@ -171,28 +171,6 @@ class BlogPage(RoutablePageMixin, Page):
         else:
             return None
 
-    def get_posts(self):
-        return BlogPage.objects.descendant_of(self).live()
-
-    @route(r'^tag/(?P<tag>[-\w]+)/$')
-    def post_by_tag(self, request, tag, *args, **kwargs):
-        self.search_type = 'tag'
-        self.search_term = tag
-        self.posts = self.get_posts().filter(tags__slug=tag)
-        return super().serve(request, *args, **kwargs)
-
-    @route(r'^category/(?P<category>[-\w]+)/$')
-    def post_by_category(self, request, category, *args, **kwargs):
-        self.search_type = 'BlogCategory'
-        self.search_term = category
-        self.posts = self.get_posts().filter(categories__slug=category)
-        return Page.serve(self, request, *args, **kwargs)
-
-    @route(r'^$')
-    def post_list(self, request, *args, **kwargs):
-        self.posts = self.get_posts()
-        return Page.serve(self, request, *args, **kwargs)
-
     search_fields = Page.search_fields + [
         index.SearchField('intro'),
         index.SearchField('body'),

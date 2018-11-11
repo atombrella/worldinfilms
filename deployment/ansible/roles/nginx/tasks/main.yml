@@ -61,6 +61,11 @@
       - systemd daemon-reload
       - restart nginx
 
+  - name: Copy dhparam.pem over
+    template: src=nginx/dhparam.pem dest=/etc/nginx/dhparam.pem owner=www-data group=www-data
+    notify:
+    - reload nginx
+
   - name: Copy nginx.conf file
     template: src=nginx/nginx.conf dest=/etc/nginx/nginx.conf mode=0644 owner=www-data group=www-data
     notify:

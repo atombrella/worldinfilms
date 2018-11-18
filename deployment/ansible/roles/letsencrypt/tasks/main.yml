@@ -11,6 +11,7 @@
     apt: pkg={{item}} state=latest
     with_items:
       - certbot
+      - python3-certbot-nginx
     become_user: root
 
   - name: change the path to letsencrypt
@@ -35,9 +36,3 @@
       day: 1
       job: "rm /var/log/letsencrypt/*.log.*"
     become_user: root
-
-  - name: copy over cli.ini
-    copy: src=etc/letsencrypt/cli.ini dest=/etc/letsencrypt/cli.ini mode=0644
-
-  # - name: request certificates
-  #   include_tasks: requests.yml

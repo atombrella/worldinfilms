@@ -1,8 +1,4 @@
-body {
-  padding-top: 50px
-}
-
-.block-related::before {
+sudo apt install python-certbot-nginx.block-related::before {
   font-weight: bolder;
   content: "See also ";
   color: red;
@@ -51,8 +47,6 @@ div.tags > h5.display-5 {
   overflow-wrap: break-word;
   font-style: normal;
   padding: 5px;
-  content-before: "<<",
-  content-after: ">>",
 }
 
 .tags > small > a {

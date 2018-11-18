@@ -8,9 +8,9 @@
   <span class="m-4"></span>
 
   {% if page.image %}
-    {% image page.image original as blog_image %}
-    <div class="card mb-4">
-      <img class="card-img-top" src="{{ blog_image.url }}" alt="{{ blog_image.default_alt_text }}">
+    {% image page.image width-600 original as blog_image %}
+    <div class="card mb-4 d-none d-sm-block d-sm-none d-md-block">
+      <img class="card-img-top" src="{{ blog_image.url }}" width="600px" alt="{{ blog_image.default_alt_text }}">
     </div>
   {% endif %}
 

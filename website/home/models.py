@@ -1,4 +1,5 @@
 from django.db import models
+
 from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
@@ -67,6 +68,3 @@ class Website(models.Model):
         ordering = ['name']
         verbose_name = ""
         verbose_name_plural = "Categories"
-
-    def __str__(self):
-        pass

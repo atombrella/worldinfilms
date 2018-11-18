@@ -41,9 +41,18 @@ a.backlink {
   text-align: justify;
 }
 
-.tags > small {
+div.tags > h5.display-5 {
+    display: inline;
+}
+
+.tags > span.tag {
   border: 1px solid black;
   padding: 4px;
+  overflow-wrap: break-word;
+  font-style: normal;
+  padding: 5px;
+  content-before: "<<",
+  content-after: ">>",
 }
 
 .tags > small > a {

@@ -4,9 +4,9 @@
 {% block title %}Search results for &raquo;{{ search_query }}&laquo;{% endblock %}
 
 {% block pagecontent %}
-  {% if search_results %}
-    <span class="m-4"></span>
+  <span class="m-4"></span>
 
+  {% if search_results %}
     <h3>Search results for <span class="font-italic">{{ search_query }}</span></h3>
 
     <hr>
@@ -23,9 +23,9 @@
     </ul>
 
   {% elif search_query %}
-    No results found
+    <h3 class="display-5">No results found</h3>
   {% else %}
-    Please type something into the search box
+    <h3 class="display-5">Please type something into the search box</h3>
   {% endif %}
 
 {% endblock %}

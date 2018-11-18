@@ -17,8 +17,8 @@
     {% with page.featured as post %}
       <div class="card mb-4">
         {% if post.image %}
-          {% image post.image original as blog_image %}
-          <img class="card-img-top" src="{{ blog_image.url }}" alt="{{ blog_image.description }}">
+          {% image post.image width-700 original as blog_image %}
+          <img class="card-img-top" width=700 src="{{ blog_image.url }}" alt="{{ blog_image.description }}">
         {% endif %}
           <div class="card-body">
             <h2 class="card-title">{{ post.title }}</h2>

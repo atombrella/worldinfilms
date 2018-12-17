@@ -1,8 +1,16 @@
-sudo apt install python-certbot-nginx.block-related::before {
+body {
+  padding-top: 50px;
+}
+
+.block-related::before {
   font-weight: bolder;
   content: "See also ";
   color: red;
   font-size: 110%;
+}
+
+a {
+  color: orange;
 }
 
 .block-related {

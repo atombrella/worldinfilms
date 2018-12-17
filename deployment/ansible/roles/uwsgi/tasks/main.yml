@@ -14,19 +14,19 @@
   - name: create emperor.ini file
     copy: src=etc/uwsgi/emperor.ini dest=/etc/uwsgi/emperor.ini owner=www-data group=www-data
 
-  - name: Create reload files
-    file: path=/tmp/all.reload group=www-data owner=www-data state=touch
-    ignore_errors: true
+  - name: Create the reload-file directory
+    file: path=/var/uwsgi/reload-files state=directory owner=www-data group=www-data mode=0755
 
-  - name: Create reload files
-    file: path=/tmp/worldinfilms.reload group=www-data owner=www-data state=touch
+  - name: Create the reload file
+    file:
+      path=/var/uwsgi/reload-files/worldinfilms.reload
+      state=touch
+      mode=0644
+      group=www-data
+      owner=www-data
 
   - name: Create /var/uwsgi folder
-    file: path=/var/uwsgi owner=worldinfilms group=worldinfilms state=directory mode=0755
-
-  - name: Set owner and permissions on /tmp/worldinfilms.pid
-    file: path=/tmp/worldinfilms.pid mode=0644 owner=worldinfilms group=worldinfilms
-    ignore_errors: yes
+    file: path=/var/uwsgi owner=www-data group=www-data state=directory mode=0755
 
   - name: Set owner and permissions on /var/uwsgi/
     file: path=/var/uwsgi/ mode=0775 owner=www-data group=www-data

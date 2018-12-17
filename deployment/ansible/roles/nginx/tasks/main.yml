@@ -42,7 +42,7 @@
 
   - name: Create nginx caching configuration
     copy:
-      src=etc/nginx/conf.d/expires.conf
+      src=expires.conf
       dest=/etc/nginx/conf.d/expires.conf
       owner=www-data
       group=www-data
@@ -52,7 +52,7 @@
 
   - name: Create nginx.service file
     copy:
-      src=lib/systemd/system/nginx.service
+      src=nginx.service
       dest=/lib/systemd/system/nginx.service
       owner=root
       group=root
@@ -63,7 +63,7 @@
 
   - name: Copy dhparam.pem over
     copy:
-      src=etc/nginx/dhparam.pem
+      src=dhparam.pem
       dest=/etc/nginx/dhparam.pem
       owner=www-data
       group=www-data
@@ -71,6 +71,11 @@
     - reload nginx
 
   - name: Copy nginx.conf file
-    template: src=nginx/nginx.conf dest=/etc/nginx/nginx.conf mode=0644 owner=www-data group=www-data
+    template:
+      src=nginx/nginx.conf
+      dest=/etc/nginx/nginx.conf
+      mode=0644
+      owner=www-data
+      group=www-data
     notify:
     - reload nginx

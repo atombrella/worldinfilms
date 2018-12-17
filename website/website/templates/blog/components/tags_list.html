@@ -5,8 +5,9 @@
   {% for tag in tags %}
 
     {% spaceless %}
-    <span class="tag"><a href="/blog/tag/{{ tag.slug }}">
-      {{ tag }}</a>{% if not forloop.last %},{% endif %}</span>
+    <span class="tag">
+      <a href="{% routablepageurl blog_index_page 'post_by_tag' tag.slug %}">{{ tag }}</a>
+    </span>
     {% endspaceless %}
   {% endfor %}
 </div>

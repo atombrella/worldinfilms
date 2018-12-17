@@ -7,6 +7,7 @@ register = template.Library()
 def tags_list(context, blog_page):
     tags = blog_page.tags.all()
     return {
+        'blog_index_page': blog_page.get_parent().specific,
         'blog_page': blog_page,
         'request': context['request'],
         'tags': tags,

@@ -87,12 +87,16 @@ class BlogIndexPage(RoutablePageMixin, Page):
 
     @route(r'^tag/(?P<tag>[- \w]+)/$')
     def post_by_tag(self, request, tag, *args, **kwargs):
+        self.search_type = 'tag'
+        self.search_term = tag
         self.posts = self.get_posts().filter(tags__slug=tag)
         return Page.serve(self, request, *args, **kwargs)
 
     @route(r'^category/(?P<category>[-\w]+)/$')
     def post_by_category(self, request, category, *args, **kwargs):
         self.posts = self.get_posts().filter(categories__slug=category)
+        self.search_type = 'tag'
+        self.search_term = category
         return Page.serve(self, request, *args, **kwargs)
 
     @route(r'^search/$')
@@ -103,6 +107,11 @@ class BlogIndexPage(RoutablePageMixin, Page):
             self.posts = self.posts.filter(body__contains=search_query)
             self.search_term = search_query
             self.search_type = 'search'
+        return Page.serve(self, request, *args, **kwargs)
+
+    @route(r'^$')
+    def post_list(self, request, *args, **kwargs):
+        self.posts = self.get_posts()
         return Page.serve(self, request, *args, **kwargs)
 
     def get_posts(self):
@@ -116,6 +125,8 @@ class BlogIndexPage(RoutablePageMixin, Page):
             context['posts'] = self.get_descendants().type(
                 BlogPage
             ).specific().live().order_by('-first_published_at')[:10]
+        context['blog_index_page'] = self.get_parent()
+        context['blog_page'] = self
         return context
 
 
@@ -134,13 +145,12 @@ class BlogTagIndexPage(Page):
     def get_context(self, request, **kwargs):
         tag = request.GET.get('tag')
         blogpages = BlogPage.objects.filter(tags__name=tag)
-
         context = super().get_context(request)
         context['blogpages'] = blogpages
         return context
 
 
-class BlogPage(RoutablePageMixin, Page):
+class BlogPage(Page):
     subtitle = models.CharField(max_length=250, null=True, blank=True)
     date = models.DateField("Post date", null=False)
     intro = RichTextField(null=False, blank=False)
@@ -150,7 +160,7 @@ class BlogPage(RoutablePageMixin, Page):
         ('related', PageChooserBlock(target_model="blog.BlogPage")),
         ('embedded_video', EmbedBlock(icon="media")),
     ], null=False, blank=False)
-    tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
+    tags = ClusterTaggableManager(through='blog.BlogPageTag', blank=True)
     image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
@@ -160,17 +170,6 @@ class BlogPage(RoutablePageMixin, Page):
         help_text='Landscape mode only; horizontal width between 1000px and 3000px.'
     )
     blog_categories = ParentalManyToManyField(BlogCategory, through=BlogCategoryBlogPage, blank=True)
-
-    @classmethod
-    def allowed_subpage_models(cls):
-        return []
-
-    def main_image(self):
-        gallery_item = self.gallery_images.first()
-        if gallery_item:
-            return gallery_item.image
-        else:
-            return None
 
     search_fields = Page.search_fields + [
         index.SearchField('intro'),
@@ -187,6 +186,22 @@ class BlogPage(RoutablePageMixin, Page):
         FieldPanel('blog_categories', classname="full", widget=forms.CheckboxSelectMultiple),
         InlinePanel('gallery_images', label="Gallery images"),
     ]
+
+    @classmethod
+    def allowed_subpage_models(cls):
+        return []
+
+    def main_image(self):
+        gallery_item = self.gallery_images.first()
+        if gallery_item:
+            return gallery_item.image
+        else:
+            return None
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context['blog_index_page'] = self.get_parent().specific
+        return context
 
 
 class BlogPageGalleryImage(Orderable):

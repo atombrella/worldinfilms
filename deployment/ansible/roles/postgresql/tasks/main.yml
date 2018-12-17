@@ -39,6 +39,3 @@
       - templates/9.6/main/postgresql.conf
       - templates/9.6/main/start.conf
     notify: restart postgresql
-
-  # initdb stuff
-  # - name: ensure correct access rights on data dir
